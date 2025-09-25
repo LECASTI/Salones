@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Disponibilidad de Salones</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="AVR4_styles.css" />
+</head>
+
+<body>
+    <div id="app-wrapper">
+        <div id="main-widgets-container">
+            <div id="rooms-status-container" class="card card-small fade-in show hidden">
+                <div id="closed-rooms-container" class="sub-widget hidden">
+                    <h2 class="text-nm font-bold mb-2 text-gray-700">
+                        Salones cerrados
+                    </h2>
+                    <ul id="closed-rooms-list" class="small-list"></ul>
+                </div>
+
+                <div id="closing-soon-rooms-container" class="sub-widget hidden">
+                    <h2 class="text-nm font-bold mb-2 text-red-500">
+                        Salones a cerrar
+                    </h2>
+                    <ul id="closing-soon-rooms-list" class="small-list"></ul>
+                </div>
+            </div>
+
+            <div id="app-container" class="card fade-in show">
+                <h1 class="text-3xl font-bold mb-4 text-indigo-700">
+                    Salones disponibles
+                </h1>
+                <p id="now-info" class="mb-6 text-gray-600 font-mono">Loading...</p>
+                <div id="room-list-container">
+                    <p id="no-rooms-message" class="text-red-500 font-semibold hidden">
+                        No hay salones disponibles
+                    </p>
+                    <ul id="best-rooms-list" class="room-list"></ul>
+                </div>
+            </div>
+
+            <div id="classes-in-use-container" class="card card-small fade-in show hidden">
+                <h2 class="text-xl font-bold mb-2 text-gray-700">
+                    Salones en uso
+                </h2>
+                <ul id="classes-in-use-list" class="small-list"></ul>
+            </div>
+        </div>
+
+        <div id="ribbon-card" class="card fade-in show" style="padding-top: 1.5rem; padding-bottom: 1rem">
+            <div id="controls-container" class="controls-container">
+                <div id="time-ribbon-container">
+                    <div id="time-marks-container"></div>
+                    <div id="ribbon-track"></div>
+                    <div id="ribbon-handle"></div>
+                </div>
+                <div id="manual-date-controls" class="hidden">
+                    <div id="day-switcher-container">
+                        <button id="prev-day" class="btn btn-indigo">&lt;</button>
+                        <span id="manual-weekday" class="font-bold text-gray-700"></span>
+                        <button id="next-day" class="btn btn-indigo">&gt;</button>
+                    </div>
+                    <div class="revert-button-container">
+                        <button id="revert-auto-btn" class="btn btn-indigo">
+                            Revertir a automático
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="AVR4_app.js"></script>
+</body>
+
+</html>
