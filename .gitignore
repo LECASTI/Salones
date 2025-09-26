@@ -1,0 +1,26 @@
+# Node modules# Node modules
+
+node_modules/node_modules/
+
+# Build output# Build output
+
+dist/dist/
+
+build/build/
+
+# System files# System files
+
+.DS_Store.DS_Store
+
+Thumbs.dbThumbs.db
+
+# VS Code settings# VS Code settings
+
+.vscode/.vscode/
+
+# Environment files# Environment files
+
+.env.env
+
+.env.*.env.*
+
