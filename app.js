@@ -424,26 +424,78 @@ function createTimeMarks() {
 }
 
 // Event Listeners
+// Drag handling: support both mouse and touch (iPhone/iPad)
+//
+// Notes:
+// - touchstart/touchmove/touchend/touchcancel are attached to the handle
+//   to allow dragging on mobile devices (including iPhone). touchmove
+//   uses `passive: false` so we can call preventDefault() and avoid
+//   page scrolling while the user drags the handle.
+function startDrag(clientX) {
+    switchToManualMode();
+    const trackRect = track.getBoundingClientRect();
+    let x = clientX - trackRect.left;
+    let percent = Math.max(0, Math.min(1, x / trackRect.width));
+    manualDateTime = percentToTime(percent);
+    updateHandlePosition(manualDateTime);
+}
+
+function continueDrag(clientX) {
+    const trackRect = track.getBoundingClientRect();
+    let x = clientX - trackRect.left;
+    let percent = Math.max(0, Math.min(1, x / trackRect.width));
+    manualDateTime = percentToTime(percent);
+    updateHandlePosition(manualDateTime);
+}
+
+function endDrag() {
+    updateUI();
+}
+
+// Mouse support (existing behavior)
 handle.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    switchToManualMode();
+    startDrag(e.clientX);
 
-    const trackRect = track.getBoundingClientRect();
     const onMouseMove = (moveEvent) => {
-        let x = moveEvent.clientX - trackRect.left;
-        let percent = Math.max(0, Math.min(1, x / trackRect.width));
-        manualDateTime = percentToTime(percent);
-        updateHandlePosition(manualDateTime);
+        continueDrag(moveEvent.clientX);
     };
 
     const onMouseUp = () => {
         document.removeEventListener("mousemove", onMouseMove);
         document.removeEventListener("mouseup", onMouseUp);
-        updateUI();
+        endDrag();
     };
 
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
+});
+
+// Touch support for iPhone/iPad
+handle.addEventListener("touchstart", (e) => {
+    // Only handle single-touch drags
+    if (e.touches.length !== 1) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    startDrag(touch.clientX);
+
+    const onTouchMove = (moveEvent) => {
+        // use the first touch point
+        if (moveEvent.touches.length === 0) return;
+        const t = moveEvent.touches[0];
+        continueDrag(t.clientX);
+    };
+
+    const onTouchEnd = () => {
+        document.removeEventListener("touchmove", onTouchMove);
+        document.removeEventListener("touchend", onTouchEnd);
+        document.removeEventListener("touchcancel", onTouchEnd);
+        endDrag();
+    };
+
+    document.addEventListener("touchmove", onTouchMove, { passive: false });
+    document.addEventListener("touchend", onTouchEnd);
+    document.addEventListener("touchcancel", onTouchEnd);
 });
 
 revertBtn.addEventListener("click", revertToAuto);
